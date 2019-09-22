@@ -109,7 +109,7 @@ def unpack_ent_obj(ent_obj):
     if ent_obj['value']:
         eo.value = ent_obj['value']['literal']['value']
 
-        if eo.range == '':
+        if not eo.range:
             if eo.type in TYPE_VECT:
                 eo.range = [ent_obj['value']['literal']['bits'] - 1, 0]
 
@@ -176,7 +176,6 @@ def gen_vhdl_doc(syst):
     doc += 'This should be \\textcolor{blue}{blue} text.\n\n'
 
     for entity in syst.entities:
-
         doc += '# {} component overview\n\n'.format(entity.name)
 
         doc += (
@@ -200,7 +199,7 @@ def gen_vhdl_doc(syst):
             # Format value
             g_value = generic.value
             if generic.value:
-                if generic.type in ['std_logic_vector', 'std_ulogic_vector']:
+                if generic.type in ('std_logic_vector', 'std_ulogic_vector'):
                     g_value = hex(generic.value)
 
             # Add row
@@ -245,7 +244,7 @@ if __name__ == '__main__':
     file_extension = sys.argv[1].split('.')[-1]
     file_extension = file_extension.lower()
 
-    if file_extension == 'vhd' or file_extension == 'vhdl':
+    if file_extension in ('vhd', 'vhdl'):
         print('vhdl file!')
         gen_vhdl_doc(read_vhdl(sys.argv[1]))
 
